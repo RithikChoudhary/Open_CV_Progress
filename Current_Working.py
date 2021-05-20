@@ -47,7 +47,11 @@ while True:
 def click_mouse(event,x,y,flags,params):
     global HSV
     if event == 1:
+        # this line will print the current BGR value of the frame after the mouse click
+        colors = frame[y,x]
+        print(str(colors) +"    \n\n" )
         print(x,y)
+        
         # if [x,y] in color_button_pos['red1']:
         (x_left, y_top), (x_right, y_bottom) = color_button_pos['red1']
         if x in range(x_left, x_right) and y in range(y_top, y_bottom):
