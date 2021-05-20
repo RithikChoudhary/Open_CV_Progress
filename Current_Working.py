@@ -56,7 +56,7 @@ def click_mouse(event,x,y,flags,params):
         (x_left, y_top), (x_right, y_bottom) = color_button_pos['red1']
         if x in range(x_left, x_right) and y in range(y_top, y_bottom):
             HSV = color_dict_HSV['red1']
-            print(HSV)
+#             print(HSV)
             return         
         
         print(HSV)
@@ -67,6 +67,7 @@ cv2.setMouseCallback('frame',click_mouse)
 
 def invisible():
     while cap.isOpened():
+        global frame
         _,frame = cap.read()
         hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
         # lower_hsv = np.array([90,50,70])
