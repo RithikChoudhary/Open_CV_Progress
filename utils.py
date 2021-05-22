@@ -47,23 +47,26 @@ char_width = {
 
 
 def _box(frame, size=(10,10), origin=(0,0), boxcolor=(255,255,255)):
-    origin = ceil(origin[0]), ceil(origin[1])
-    conclusion = ceil(origin[0]+size[0]), ceil(origin[1]+size[1])
+    origin      = ceil(origin[0]), ceil(origin[1])
+    conclusion  = ceil(origin[0]+size[0]), ceil(origin[1]+size[1])
     
     if DEBUG :
         print("in _box") 
         print("\torigin :", origin)
         print("\tsize :", size)
         print("\tconclusion :", conclusion)
+    
+    if isinstance(frame, type(None)):
+        cv2.rectangle(
+            frame,
+            origin,
+            conclusion,
+            boxcolor,
+            -1,
+            cv2.LINE_4
+        )
 
-    cv2.rectangle(
-        frame,
-        origin,
-        conclusion,
-        boxcolor,
-        -1,
-        cv2.LINE_4
-    )
+    return conclusion
 
 
 def _text(frame, text, scale=1, origin=(0,0), textcolor=(0,0,0)):
@@ -73,32 +76,21 @@ def _text(frame, text, scale=1, origin=(0,0), textcolor=(0,0,0)):
         print("\torigin :", origin)
         print("\tscale :", scale)
         print("\ttext :", text)
+    
+    if isinstance(frame, type(None)):
+        cv2.putText(
+            frame,
+            text,
+            origin,
+            cv2.FONT_HERSHEY_SIMPLEX,
+            scale,
+            textcolor,
+            1,
+            cv2.LINE_AA
+        )
 
-    cv2.putText(
-        frame,
-        text,
-        origin,
-        cv2.FONT_HERSHEY_SIMPLEX,
-        scale,
-        textcolor,
-        1,
-        cv2.LINE_AA
-    )
 
-# def draw_text_box(frame, text, scale=1, origin=(20,20), padding=12):
-#     text_size = sum([char_width[_] for _ in text]), 22
-#     padding*=scale
-
-#     text_size = (text_size[0] + padding, text_size[1] + padding)
-
-#     box_origin = (origin[0] + padding, origin[1] + padding)
-#     txt_origin = (ceil(origin[0] + padding), ceil(origin[1] + padding))
-
-#     _box(frame, text_size, box_origin)
-
-#     _text(frame, text, scale, txt_origin)
-
-def draw_text_box(frame, text, scale=1, origin=(20, 20), padding=8, textcolor=(0,0,0), boxcolor=(255,255,255)):
+def draw_text_box(text, frame=None, scale=1, origin=(20, 20), padding=8, textcolor=(0,0,0), boxcolor=(255,255,255)):
     padding*=scale
     text_size = sum([char_width[_] for _ in text]), 22
 
@@ -107,6 +99,8 @@ def draw_text_box(frame, text, scale=1, origin=(20, 20), padding=8, textcolor=(0
     box_origin = origin
     txt_origin = origin[0]+padding, origin[1]+padding
 
-    _box(frame, text_size, box_origin, boxcolor)
+    conclusion = _box(frame, text_size, box_origin, boxcolor)
     _text(frame, text, scale, txt_origin, textcolor)
+
+    return conclusion
 
