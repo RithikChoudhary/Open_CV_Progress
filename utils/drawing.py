@@ -1,7 +1,8 @@
 import cv2
+from numpy import array
 from math import ceil
 
-DEBUG = True
+DEBUG = False
 
 char_size = {
     'a': [18, 24], 'b': [19, 24], 'c': [18, 24], 
@@ -45,7 +46,6 @@ char_width = {
     'Z': 20
 }
 
-
 def _box(frame, size=(10,10), origin=(0,0), boxcolor=(255,255,255)):
     origin      = ceil(origin[0]), ceil(origin[1])
     conclusion  = ceil(origin[0]+size[0]), ceil(origin[1]+size[1])
@@ -56,7 +56,7 @@ def _box(frame, size=(10,10), origin=(0,0), boxcolor=(255,255,255)):
         print("\tsize :", size)
         print("\tconclusion :", conclusion)
     
-    if isinstance(frame, type(None)):
+    if not isinstance(frame, type(None)):
         cv2.rectangle(
             frame,
             origin,
@@ -77,22 +77,26 @@ def _text(frame, text, scale=1, origin=(0,0), textcolor=(0,0,0)):
         print("\tscale :", scale)
         print("\ttext :", text)
     
-    if isinstance(frame, type(None)):
-        cv2.putText(
-            frame,
-            text,
-            origin,
-            cv2.FONT_HERSHEY_SIMPLEX,
-            scale,
-            textcolor,
-            1,
-            cv2.LINE_AA
-        )
+    if not isinstance(frame, type(None)):
+        try:
+            cv2.putText(
+                frame,
+                text,
+                origin,
+                cv2.FONT_HERSHEY_SIMPLEX,
+                scale,
+                color=textcolor,
+                thickness = 1,
+                lineType=cv2.LINE_AA
+            )
+        except Exception as e:
+            print(textcolor, e)
 
 
 def draw_text_box(text, frame=None, scale=1, origin=(20, 20), padding=8, textcolor=(0,0,0), boxcolor=(255,255,255)):
+    # print(text)
     padding*=scale
-    text_size = sum([char_width[_] for _ in text]), 22
+    text_size = sum([char_width[_] if _ in char_width else 10 for _ in text]), 22
 
     text_size = (text_size[0]*scale+2*padding, text_size[1]*scale+2*padding)
 
