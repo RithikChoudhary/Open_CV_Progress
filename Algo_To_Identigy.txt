@@ -1,0 +1,29 @@
+We have 3 factores 
+these all for gray scale image
+
+
+Lightness The graylevel will be calculated as
+
+Lightness = ½ × (max(R,G,B) + min(R,G,B))
+
+Luminosity The graylevel will be calculated as
+
+Luminosity = 0.21 × R + 0.72 × G + 0.07 × B
+
+Average The graylevel will be calculated as
+
+Average Brightness = (R + G + B) ÷ 3
+
+
+4th factor is the color of the image at each pixel in RGB image
+from PIL import Image
+ 
+# creating a image object
+im = Image.open(r"C:\Users\System-Pc\Desktop\leave.jpg")
+px = im.load()
+print (px[4, 4])
+px[4, 4] = (0, 0, 0)
+print (px[4, 4])
+coordinate = x, y = 150, 59
+# using getpixel method
+print (im.getpixel(coordinate));
